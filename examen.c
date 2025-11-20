@@ -3,7 +3,8 @@ Proyecto Final*/
 #include<stdio.h>
 void leerAlmacenarVotos(int votos[][3], int *oyentes);
 void calcularVotos(int votos[][3], int oyentes);
-void reparticionDePuntos();
+void reparticionDePuntos(int votos[][3], int oyentes, int cancionPrimero, int cancionSegundo);
+
 int main()
 {
   int i, oyentes, votos[100][3];
@@ -17,6 +18,7 @@ int main()
   calcularVotos(votos, oyentes);
   return 0;
 }
+
 void leerAlmacenarVotos(int votos[][3], int *oyentes)
 { 
   int song1, song2, song3, i=0;
@@ -35,6 +37,7 @@ void leerAlmacenarVotos(int votos[][3], int *oyentes)
   } 
   *oyentes = i;
 }
+
 void calcularVotos(int votos[][3], int oyentes)
 {
   int contarVotos[10] = {0}, i, j, cancion, primero=-1, segundo=-1;
@@ -72,4 +75,34 @@ void calcularVotos(int votos[][3], int oyentes)
   }
   printf("La cancion mas votada es la %d con %d con votos \n", cancionPrimero, primero);
   printf("La segunda cancion mas votada es la %d con %d votos \n", cancionSegundo, segundo);
+}
+
+void reparticionDePuntos(int votos[][3], int oyentes, int cancionPrimero, int cancionSegundo)
+{
+  int i, j, puntosOyentes[100]={0}, puntosGanador=-1, ganador=-1;
+  printf("Mostrar los puntos de los oyentes: \n");
+  for(i=0; i<oyentes; i++)
+  {
+    int estaLaPrimera = 0, estaLaSegunda = 0;
+    for(j=0; j<3; j++)
+    {
+      if(votos[i][j] == cancionPrimero)
+        estaLaPrimera = 1;
+      if(votos[i][j] == cancionSegundo)
+        estaLaSegunda == 1;
+    }
+    if(estaLaPrimera == 1)
+      puntosOyentes[i] = puntosOyentes[i] + 30;
+    if(estaLaSegunda == 1)
+      puntosOyentes[i] = puntosOyentes[i] +10;
+    if(estaLaPrimera == 1 && estaLaSegunda == 1)
+      puntosOyentes[i] = puntosOyentes[i] +10;
+    printf("Oyente %d: %d puntos \n", i, puntosOyentes[i]);
+    if(puntosOyentes[i] > puntosGanador)
+    {
+      puntosGanador = puntosOyentes[i];
+      ganador = i;
+    }
+  }
+  printf("Ganador: el oyente numero %d", ganador);
 }
